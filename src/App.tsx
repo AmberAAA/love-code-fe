@@ -67,7 +67,7 @@ function App() {
 
   return (
     <div className="App">
-      <Table columns={columns}  {...tableProps} />
+      <Table columns={columns}  {...tableProps} rowKey="id" />
       <ImgModal id={selectId} onClose={() => {setSelectId(0)}} />
     </div>
   );
