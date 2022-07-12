@@ -1,6 +1,9 @@
+import qs from 'qs'
+
 export interface IPageQuery {
   page: number;
   size: number;
+  name?: string;
 }
 
 export interface IImgMeta {
@@ -24,7 +27,7 @@ export interface IPage<T> {
 }
 
 export const getPage: (q: IPageQuery) => Promise<IPage<IImg>> = (query) =>
-  fetch(`/imgs/page?page=${query.page}&size=${query.size}`, {
+  fetch(`/imgs/page?` + qs.stringify(query), {
     cache: "force-cache",
   }).then((res) => res.json());
 
