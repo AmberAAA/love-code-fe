@@ -1,6 +1,6 @@
-import { Button, Image, Input, Table, Tag } from "antd";
-import React, { useState } from "react";
-import { getPage, IImg } from "./api";
+import { Button, Image, Input, Select, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import { getPage, getTagPage, IImg, ITag } from "./api";
 import { useAntdTable } from "ahooks";
 import { ColumnsType } from "antd/lib/table";
 import { ImgModal } from "./ImgModal";
@@ -38,6 +38,13 @@ const ImagePrev: React.FC<{ img: IImg }> = (props) => {
 function App() {
   const [selectId, setSelectId] = useState(0);
   const [form] = Form.useForm();
+  const [tags, setTags] = useState<ITag[]>([]);
+
+  useEffect(() => {
+    getTagPage({ page: 1, size: 300 }).then(res => {
+      setTags(res.data)
+    })
+  }, [])
   const { tableProps, search } = useAntdTable(
     (e) =>
       getPage({ page: e.current, size: e.pageSize, ...form.getFieldsValue()}).then((res) => {
@@ -57,6 +64,14 @@ function App() {
       <Form form={form} style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Form.Item name="name">
           <Input.Search placeholder="enter name" style={{ width: 240 }} onSearch={submit} />
+        </Form.Item>
+        <Form.Item name="tag">
+          <Select style={{ width: 240 }} onSearch={submit}>
+            { tags.map(tag => <Select.Option key={tag.id} value={tag.id}>{tag.tag}</Select.Option>) }
+          </Select>
+        </Form.Item>
+        <Form.Item>
+          <Button onClick={submit}>搜索</Button>
         </Form.Item>
       </Form>
     </div>
