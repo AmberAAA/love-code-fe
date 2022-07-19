@@ -1,6 +1,3 @@
-@import '~antd/dist/antd.css';
-
-
-html {
-    background-color: rgb(231, 235, 240);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

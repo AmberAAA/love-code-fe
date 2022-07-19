@@ -5,6 +5,8 @@ import { useAntdTable } from "ahooks";
 import { ColumnsType } from "antd/lib/table";
 import { ImgModal } from "./ImgModal";
 import { Form } from "antd";
+import Demo from "./demo";
+import { Figure } from "./Figure";
 
 const getCoverUrl = (img: IImg) => `/${img.dirPath}/cover.${img.suffix}`;
 
@@ -41,14 +43,18 @@ function App() {
   const [tags, setTags] = useState<ITag[]>([]);
 
   useEffect(() => {
-    getTagPage({ page: 1, size: 300 }).then(res => {
-      setTags(res.data)
-    })
-  }, [])
+    getTagPage({ page: 1, size: 300 }).then((res) => {
+      setTags(res.data);
+    });
+  }, []);
   const { tableProps, search } = useAntdTable(
     (e) =>
-      getPage({ page: e.current, size: e.pageSize, ...form.getFieldsValue()}).then((res) => {
-        console.log(form.getFieldsValue())
+      getPage({
+        page: e.current,
+        size: e.pageSize,
+        ...form.getFieldsValue(),
+      }).then((res) => {
+        console.log(form.getFieldsValue());
         return {
           list: res.data,
           total: res.total,
@@ -61,13 +67,21 @@ function App() {
 
   const searchForm = (
     <div style={{ marginBottom: 16 }}>
-      <Form form={form} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Form form={form} style={{ display: "flex", justifyContent: "flex-end" }}>
         <Form.Item name="name">
-          <Input.Search placeholder="enter name" style={{ width: 240 }} onSearch={submit} />
+          <Input.Search
+            placeholder="enter name"
+            style={{ width: 240 }}
+            onSearch={submit}
+          />
         </Form.Item>
         <Form.Item name="tag">
           <Select style={{ width: 240 }} onSearch={submit}>
-            { tags.map(tag => <Select.Option key={tag.id} value={tag.id}>{tag.tag}</Select.Option>) }
+            {tags.map((tag) => (
+              <Select.Option key={tag.id} value={tag.id}>
+                {tag.tag}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item>
@@ -115,7 +129,7 @@ function App() {
 
   return (
     <div className="App">
-      { searchForm }
+      {searchForm}
       <Table columns={columns} {...tableProps} rowKey="id" />
       <ImgModal
         id={selectId}
@@ -127,4 +141,14 @@ function App() {
   );
 }
 
-export default App;
+const NewApp: React.FC = () => {
+  return (
+    <div>
+      <Figure />
+    </div>
+  );
+};
+
+export default NewApp;
+
+// export default App;
